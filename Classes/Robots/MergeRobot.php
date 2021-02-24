@@ -2,11 +2,8 @@
 
 namespace Classes\Robots;
 
-require_once 'Interfaces/RobotInterface.php';
 
-use Interfaces\RobotInterface;
-
-class MergeRobot implements RobotInterface
+class MergeRobot
 {
     private $robots;
 
@@ -48,23 +45,11 @@ class MergeRobot implements RobotInterface
         return $height;
     }
 
-    public function setHeight($height)
+    public function addRobot($robot)
     {
-        // TODO: Implement setHeight() method.
-    }
-
-    public function setSpeed($speed)
-    {
-        // TODO: Implement setSpeed() method.
-    }
-
-    public function setWeight($weight)
-    {
-        // TODO: Implement setWeight() method.
-    }
-
-    public function addRobot(RobotInterface ...$robot)
-    {
-        $this->robots = array_merge($this->robots, $robot);
+        if(is_array($robot)) {
+            $this->robots = array_merge($this->robots, $robot);
+        }
+        else $this->robots[] = $robot;
     }
 }

@@ -20,10 +20,21 @@ class FactoryRobot
     public function __call($name, $arguments)
     {
         $createRobot = explode('create', $name);
-        if(count($createRobot) > 1 && isset($this->robotTypes[$createRobot[1]]))
+        if(count($createRobot) > 1 && isset($this->robots[$createRobot[1]]))
         {
-            $robot = new $this->robotTypes[$createRobot[1]];
-            $this->robots[] = $robot;
+            $robot = clone $this->robots[$createRobot[1]][0];
+            $this->robots[$createRobot[1]][] = $robot;
+
+            if(count($arguments) >= 1)
+            {
+                $robots = [$robot];
+                for($i = 1; $i < $arguments[0]; $i++)
+                {
+                    $robots[] = clone $this->robots[$createRobot[1]][0];
+                }
+
+                return $robots;
+            }
 
             return $robot;
         }
@@ -34,6 +45,6 @@ class FactoryRobot
     public function addType(RobotInterface $robot)
     {
         $className = explode('\\', get_class($robot));
-        $this->robotTypes[end($className)] = get_class($robot);
+        $this->robots[end($className)][] = $robot;
     }
 }

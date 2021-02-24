@@ -1,15 +1,28 @@
 <?php
 
+use Classes\FactoryRobot;
+use Classes\Robots\MergeRobot;
+use Classes\Robots\RobotTest;
+use Classes\Robots\RobotTest2;
+
 include 'Classes\FactoryRobot.php';
 require_once 'Classes\Robots\RobotTest.php';
+require_once 'Classes\Robots\RobotTest2.php';
 require_once 'Classes\Robots\MergeRobot.php';
 
-$factory = new \Classes\FactoryRobot();
-$factory->addType(new \Classes\Robots\RobotTest());
-$testRobot = $factory->createRobotTest();
-$testRobot1 = $factory->createRobotTest();
+$factory = new FactoryRobot();
 
-$mergeRobot = new \Classes\Robots\MergeRobot();
-$mergeRobot->addRobot($testRobot);
-$mergeRobot->addRobot($testRobot1);
-echo $mergeRobot->getHeight() . " | " . $mergeRobot->getWeight() . " | " .$mergeRobot->getSpeed();
+$factory->addType(new RobotTest());
+$factory->addType(new RobotTest2());
+
+var_dump($factory->createRoboTest(5));
+var_dump($factory->createRobotTest2(2));
+$mergeRobot = new MergeRobot();
+$mergeRobot ->addRobot(new RobotTest2());
+$mergeRobot ->addRobot($factory->createRobotTest2(2));
+$factory->addType($mergeRobot);
+$res = reset($factory->createMergeRobot(1));
+
+echo $res->getSpeed();
+echo $res->getWeight();
+
